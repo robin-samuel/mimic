@@ -9,8 +9,14 @@ import (
 )
 
 type Point struct {
-	X, Y      float64
+	X, Y float64
+
+	velocity  float64
 	timestamp time.Duration
+}
+
+func (p Point) Velocity() float64 {
+	return p.velocity
 }
 
 func (p Point) Timestamp() time.Duration {
@@ -101,7 +107,8 @@ func Generate(config Config) []Point {
 			noise := distuv.Normal{Mu: 0, Sigma: config.Noise}
 			x += noise.Rand()
 			y += noise.Rand()
-			points = append(points, Point{X: x + x0, Y: y + y0, timestamp: time.Duration(t) * time.Second})
+			v := SigmaLognormal(t, t0, mu, sigma)
+			points = append(points, Point{X: x + x0, Y: y + y0, velocity: v, timestamp: time.Duration(t) * time.Second})
 		}
 	}
 
