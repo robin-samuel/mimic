@@ -9,7 +9,12 @@ import (
 )
 
 type Point struct {
-	X, Y float64
+	X, Y      float64
+	timestamp time.Duration
+}
+
+func (p Point) Timestamp() time.Duration {
+	return p.timestamp
 }
 
 type Config struct {
@@ -96,7 +101,7 @@ func Generate(config Config) []Point {
 			noise := distuv.Normal{Mu: 0, Sigma: config.Noise}
 			x += noise.Rand()
 			y += noise.Rand()
-			points = append(points, Point{X: x + x0, Y: y + y0})
+			points = append(points, Point{X: x + x0, Y: y + y0, timestamp: time.Duration(t) * time.Second})
 		}
 	}
 
