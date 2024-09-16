@@ -1,10 +1,10 @@
 package mimic_test
 
 import (
-	"mimic"
 	"testing"
 	"time"
 
+	"github.com/robin-samuel/mimic"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
