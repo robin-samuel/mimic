@@ -16,9 +16,10 @@ func TestMimic(t *testing.T) {
 			{X: 400, Y: 100},
 			{X: 500, Y: 500},
 			{X: 600, Y: 400},
+			{X: 300, Y: 300},
 		},
 		Duration:  2 * time.Second,
-		Noise:     0.2,
+		Noise:     0.05,
 		Frequency: 60,
 	}
 	path := mimic.Generate(config)
