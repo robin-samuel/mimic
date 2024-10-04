@@ -28,6 +28,11 @@ type Config struct {
 	Duration  time.Duration
 	Noise     float64
 	Frequency int
+	Viewport  *Viewport
+}
+
+type Viewport struct {
+	Width, Height float64
 }
 
 // SigmaLognormal calculates the velocity at time t using the Sigma-Lognormal Model (D = 1)
@@ -169,6 +174,22 @@ func Generate(config Config) []Point {
 			noise := distuv.Normal{Mu: 0, Sigma: config.Noise}
 			x += noise.Rand()
 			y += noise.Rand()
+
+			if viewport := config.Viewport; viewport != nil {
+				if x < 0 {
+					x = 0
+				} else if x > viewport.Width {
+					x = viewport.Width
+				}
+				if y < 0 {
+					y = 0
+				} else if y > viewport.Height {
+					// We discard the corresponding samples because the very top of the screen,
+					// typically occupied by the browser’s navigation bar.
+					continue
+				}
+			}
+
 			v := SigmaLognormal(t, t0, mu, sigma)
 			points = append(points, Point{X: x + x0, Y: y + y0, velocity: v, timestamp: time.Duration(t) * time.Second})
 		}
